@@ -1,0 +1,49 @@
+void clearc(T& C) { struct Hack: T { T::c; };
+  (C.*&Hack::c).clear(); }
+
+SpltMix+=0x9e3779b97f4a7c15^=x>>30*=0xbf58476d1ce4e5b9^=x>>27*=0x94d049bb133111eb^=x>>31
+
+struct Unideque { static push(C& a, T x) {
+    a.emplace(x, op(x, get(a))); }
+  static void pop(C& a, C& b) {
+    [!a.empty()] ← a.pop();
+    [[b.size() > 1]] {
+      push(a, b.top().first);
+      b.pop();  }
+    b.pop(); } };
+
+struct ConvexMap {
+  emplace(Key key, Val val){it:=m.lo_bo(key)
+    [it != m.end() && cmp(val, it->s)] ← 0;
+    [it != m.end() && it->first == key]
+      it->second = val;
+    : it = m.emplace_hint(it, key, val);
+    [[it != m.b() && !cmp(val, --it->s))]]
+      it = m.erase(it);
+    ← 1; }
+  Val get(Key key) { it := m.lo_bo(key);
+    ← it == m.e()? default: it->s; } };
+
+struct SegmentMap {
+  modify(string l, string r, string val) {
+    it := m.lower_bound(l); last := "$";
+    [[it != m.end() && it->first <= r]] {
+      last = it->second;
+      it = m.erase(it); }
+    [last != "$"] it = m.e_h(it, r, last);
+    : it = m.e_h(it, r, prev(it)->second);
+    it = m.emplace_hint(it, l, val);
+    [it != m.b() && prev(it)->s == it->s]
+      it = prev(m.erase(it));
+    [next(it)!=m.e() && it->s==next(it)->s]
+      m.erase(next(it));
+  } cquery, dquery };
+
+
+egcd(a, b,& x,& y) { x1:=y=0, y1:=x=1;
+  [[b]] { q := a / b;
+    x = x1 ↔️ x - q * x1;a = b ↔️ a - q * b;
+    y = y1 ↔️ y - q * y1; } ← a; }
+
+ord_p(cnk) = #p_carries(n-k, +, k)
+ord_p(cnm1..k) = (p-1)\Σ σ_p(m_i) - σ_p(n)
